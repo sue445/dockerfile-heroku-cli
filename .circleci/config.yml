@@ -35,9 +35,47 @@ jobs:
           command: |
             docker run -it --rm heroku-cli bash -c "heroku --version"
 
+  update_version:
+    working_directory: /app
+    docker:
+      - image: node
+    steps:
+      - checkout
+
+      - run:
+          name: Install package
+          command: |
+            apt-get update
+            apt-get install jq git -y
+
+      - run:
+          name: Setup git
+          command: |
+            git config push.default current
+            git config user.name "CircleCI"
+            git config user.email ${EMAIL}
+
+      - run:
+          name: Check latest heroku-cli
+          command: |
+            npm info heroku-cli versions --json | jq --raw-output .[-1:][0] > VERSION
+
+      - run:
+          name: Update VERSION
+          command: |
+            git add VERSION
+            set +o pipefail
+            git commit -m "Bump version from CircleCI" | true
+            set -o pipefail
+            git push origin
+
 workflows:
   version: 2
 
   build:
     jobs:
       - build
+
+  update_version:
+    jobs:
+      - update_version
