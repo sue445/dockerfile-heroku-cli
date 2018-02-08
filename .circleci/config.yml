@@ -76,6 +76,12 @@ workflows:
     jobs:
       - build
 
-  update_version:
+  weekly_update:
+    triggers:
+      - schedule:
+          cron: "0 0 * * 0"
+          filters:
+            branches:
+              only: master
     jobs:
       - update_version
