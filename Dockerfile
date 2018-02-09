@@ -1,6 +1,6 @@
 FROM node:8-alpine
 
-RUN apk --update --no-cache add git \
+RUN apk --update --no-cache add bash git \
  && npm install -g heroku-cli \
  && rm -rf /tmp/* /root/.npm \
  && cd /usr/local/lib/node_modules/npm/ \
