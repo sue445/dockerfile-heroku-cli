@@ -8,5 +8,5 @@ docker build --rm -t heroku-cli .
 
 ## Running
 ```bash
-docker run -it --rm heroku-cli bash
+docker run -it --rm heroku-cli sh
 ```
