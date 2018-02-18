@@ -1,6 +1,6 @@
 FROM node:8-alpine
 
-RUN apk --update --no-cache add bash git openssh
+RUN apk --update --no-cache add bash git openssh-client
 
 RUN npm install -g heroku-cli \
  && rm -rf /tmp/* /root/.npm \
