@@ -1,5 +1,7 @@
 FROM node:8-alpine
 
+MAINTAINER sue445 <sue445@sue445.net>
+
 RUN apk --update --no-cache add bash git openssh-client
 
 RUN npm install -g heroku-cli \
