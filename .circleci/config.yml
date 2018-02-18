@@ -69,11 +69,14 @@ jobs:
       - run:
           name: Update VERSION
           command: |
+            VERSION=$(cat VERSION)
             git add VERSION
             set +o pipefail
             git commit -m "Bump version from CircleCI" | true
+            git tag -a ${VERSION} -m "Release ${VERSION}" | true
             set -o pipefail
             git push origin
+            git push origin --tags
 
 workflows:
   version: 2
