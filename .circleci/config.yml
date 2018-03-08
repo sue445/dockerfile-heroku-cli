@@ -75,8 +75,8 @@ jobs:
             git commit -m "Bump version from CircleCI" | true
             git tag -a ${VERSION} -m "Release ${VERSION}" | true
             set -o pipefail
-            git push origin
             git push origin --tags
+            git push origin
 
 workflows:
   version: 2
