@@ -64,7 +64,7 @@ jobs:
       - run:
           name: Check latest heroku-cli
           command: |
-            npm info heroku-cli versions --json | jq --raw-output .[-1:][0] > VERSION
+            npm info heroku versions --json | jq --raw-output .[-1:][0] > VERSION
 
       - run:
           name: Update VERSION
