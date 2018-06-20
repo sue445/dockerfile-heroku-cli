@@ -1,10 +1,11 @@
-FROM debian:stable-slim
+FROM node:8-alpine
 
 MAINTAINER sue445 <sue445@sue445.net>
 
-RUN apt-get update \
- && apt-get install -y curl xz-utils git \
- && apt-get clean \
- && apt-get autoclean
+RUN apk --update --no-cache add bash git openssh-client
 
-RUN curl https://cli-assets.heroku.com/install.sh | sh
+RUN npm install -g heroku \
+ && rm -rf /tmp/* /root/.npm \
+ && cd /usr/local/lib/node_modules/npm/ \
+ && rm -rf man doc html *.md *.bat *.yml changelogs scripts test AUTHORS LICENSE Makefile \
+ && find /usr/local/lib/node_modules/ -name test -o -name tests -o -name .bin -type d | xargs rm -rf
