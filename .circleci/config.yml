@@ -71,6 +71,10 @@ jobs:
           command: |
             VERSION=$(cat VERSION)
             git add VERSION
+
+            sed -i -e "s/ENV HEROKU_CLI_VERSION .*$/ENV HEROKU_CLI_VERSION ${VERSION}/g" Dockerfile
+            git add Dockerfile
+
             set +o pipefail
             git commit -m "Bump version ${VERSION} from CircleCI" | true
             git tag -a ${VERSION} -m "Release ${VERSION}" | true
