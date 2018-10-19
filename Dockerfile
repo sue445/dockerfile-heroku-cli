@@ -2,7 +2,7 @@ FROM node:8-alpine
 
 MAINTAINER sue445 <sue445@sue445.net>
 
-ENV HEROKU_CLI_VERSION 7.18.2
+ENV HEROKU_CLI_VERSION 7.18.3
 
 RUN apk --update --no-cache add bash git openssh-client
 
