@@ -92,7 +92,7 @@ workflows:
   daily_update:
     triggers:
       - schedule:
-          cron: "0 0 * * *"
+          cron: "19 0 * * *" # JST 4:00
           filters:
             branches:
               only: master
