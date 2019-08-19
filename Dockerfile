@@ -2,7 +2,7 @@ FROM node:8-alpine
 
 RUN apk --update --no-cache add bash git openssh-client
 
-ENV HEROKU_CLI_VERSION 7.27.1
+ENV HEROKU_CLI_VERSION 7.28.0
 
 RUN npm install -g heroku@${HEROKU_CLI_VERSION} \
  && rm -rf /tmp/* /root/.npm \
