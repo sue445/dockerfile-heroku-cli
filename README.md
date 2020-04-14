@@ -34,7 +34,7 @@ jobs:
           name: Setup Heroku
           command: |-
             cat > ~/.netrc << EOF
-            machine api.heroku.com
+            machine git.heroku.com
               login $HEROKU_LOGIN
               password $HEROKU_API_KEY
             EOF
@@ -54,8 +54,10 @@ jobs:
           name: Deploy to Heroku
           command: |-
             heroku config:add BUNDLE_WITHOUT="test:development" --app $HEROKU_APP_NAME
+            
+            heroku git:remote -a $HEROKU_APP_NAME 
 
-            git push git@heroku.com:$HEROKU_APP_NAME.git $CIRCLE_SHA1:refs/heads/master
+            git push heroku $CIRCLE_SHA1:refs/heads/master
 
             heroku run rake db:migrate --app $HEROKU_APP_NAME
 
