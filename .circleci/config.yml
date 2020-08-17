@@ -1,5 +1,8 @@
 version: 2.1
 
+orbs:
+  slack: circleci/slack@volatile
+
 commands:
   build_with_cache:
     parameters:
@@ -58,6 +61,9 @@ jobs:
             docker run -it --rm heroku-cli bash -c "heroku --version"
             docker run -it --rm heroku-cli bash -c "git --version"
 
+      - run: apk --update --no-cache add bash curl
+      - slack/status
+
   update_version:
     working_directory: /app
     docker:
@@ -98,6 +104,8 @@ jobs:
             set -o pipefail
             git push origin --tags
             git push origin
+
+      - slack/notify-on-failure
 
 workflows:
   version: 2
