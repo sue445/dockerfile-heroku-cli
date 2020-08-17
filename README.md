@@ -16,8 +16,13 @@ docker run -it --rm sue445/heroku-cli bash
 ```
 
 ## Example
-### CircleCI
-c.f. https://circleci.com/docs/2.0/deployment-integrations/#heroku
+### CircleCI 2.1+
+Use https://circleci.com/orbs/registry/orb/circleci/heroku
+
+`sue445/heroku-cli` is unnecessary
+
+### CircleCI 2.0 (deprecated)
+The following are deprecated.
 
 ```yml
 # .circleci/config.yml
