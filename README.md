@@ -91,9 +91,9 @@ deploy:
   resource_group: heroku
 
   script:
-    - heroku config:add BUNDLE_WITHOUT="test:development" --app $HEROKU_APP_NAME
-    - git push https://heroku:${HEROKU_API_KEY}@git.heroku.com/${HEROKU_APP_NAME}.git $CI_COMMIT_SHA:master
-    - heroku run rake db:migrate --app $HEROKU_APP_NAME
+    - heroku config:add BUNDLE_WITHOUT="test:development" --app ${HEROKU_APP_NAME}
+    - git push https://heroku:${HEROKU_API_KEY}@git.heroku.com/${HEROKU_APP_NAME}.git ${CI_COMMIT_SHA}:master
+    - heroku run rake db:migrate --app ${HEROKU_APP_NAME}
 
   only:
     - master
