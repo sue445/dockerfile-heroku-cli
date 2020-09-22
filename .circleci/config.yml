@@ -52,6 +52,7 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker
+      - run: apk --update --no-cache add bash curl
       - build_with_cache:
           image_name:       heroku-cli
           cache_key_prefix: v2
@@ -61,7 +62,6 @@ jobs:
             docker run -it --rm heroku-cli bash -c "heroku --version"
             docker run -it --rm heroku-cli bash -c "git --version"
 
-      - run: apk --update --no-cache add bash curl
       - slack/status
 
   update_version:
