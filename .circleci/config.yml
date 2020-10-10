@@ -52,7 +52,7 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker
-      - run: apk --update --no-cache add bash curl
+      - run: apk --update --no-cache add bash curl jq
       - build_with_cache:
           image_name:       heroku-cli
           cache_key_prefix: v2
