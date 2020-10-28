@@ -62,10 +62,8 @@ jobs:
             docker run -it --rm heroku-cli bash -c "heroku --version"
             docker run -it --rm heroku-cli bash -c "git --version"
 
-      - slack/notify:
-          event: fail
-          template: basic_fail_1
-          
+      - slack/status
+
   update_version:
     working_directory: /app
     docker:
@@ -107,10 +105,8 @@ jobs:
             git push origin --tags
             git push origin
 
-      - slack/notify:
-          event: fail
-          template: basic_fail_1
-          
+      - slack/notify-on-failure
+
 workflows:
   version: 2
 
