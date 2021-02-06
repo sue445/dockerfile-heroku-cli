@@ -2,14 +2,14 @@ name: update_version
 
 on:
   schedule:
-    - cron: "0 21 * * *" # JST 6:00
+    - cron: "0 19 * * *" # JST 4:00
   workflow_dispatch:
 
 jobs:
   update_version:
     runs-on: ubuntu-latest
 
-    container: python:3.7
+    container: node
 
     steps:
       - uses: actions/checkout@v2
@@ -28,22 +28,19 @@ jobs:
       - name: Update VERSION
         run: |
           set -xe
-          # c.f. https://github.com/stedolan/jq/issues/708#issuecomment-75394871
-          VERSION=$(curl -s https://pypi.org/pypi/awscli/json | jq --raw-output '.releases | keys | sort_by(. | split(".") | map(tonumber)) | .[-1:][0]')
 
-          if [ -z "$VERSION" ]; then
-            echo '$VERSION is empty!'
-            exit 1
-          fi
+          VERSION=$(cat VERSION)
+          git add VERSION
 
-          sed -i -e "s/ENV AWSCLI_VERSION .*$/ENV AWSCLI_VERSION ${VERSION}/g" Dockerfile
+          sed -i -e "s/ENV HEROKU_CLI_VERSION .*$/ENV HEROKU_CLI_VERSION ${VERSION}/g" Dockerfile
           git add Dockerfile
 
           set +e
-          git commit -m "Bump version ${VERSION} from GitHub Actions"
-          git tag -a ${VERSION} -m "Release ${VERSION}"
+          git commit -m "Bump version ${VERSION} from CircleCI" | true
+          git tag -a ${VERSION} -m "Release ${VERSION}" | true
           git push origin --tags
           set -e
+
           git push origin
 
       - name: Slack Notification (not success)
