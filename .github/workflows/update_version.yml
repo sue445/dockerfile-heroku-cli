@@ -9,7 +9,7 @@ jobs:
   update_version:
     runs-on: ubuntu-latest
 
-    container: node
+    container: node:buster
 
     steps:
       - name: Install package
