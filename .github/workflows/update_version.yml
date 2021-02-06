@@ -1,0 +1,83 @@
+name: update_version
+
+on:
+  schedule:
+    - cron: "0 21 * * *" # JST 6:00
+  workflow_dispatch:
+
+jobs:
+  update_version:
+    runs-on: ubuntu-latest
+
+    container: python:3.7
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install package
+        run: |
+          apt-get update
+          apt-get install git jq -y
+
+      - name: Setup git
+        run: |
+          git config push.default current
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+
+      - name: Update VERSION
+        run: |
+          set -xe
+          # c.f. https://github.com/stedolan/jq/issues/708#issuecomment-75394871
+          VERSION=$(curl -s https://pypi.org/pypi/awscli/json | jq --raw-output '.releases | keys | sort_by(. | split(".") | map(tonumber)) | .[-1:][0]')
+
+          if [ -z "$VERSION" ]; then
+            echo '$VERSION is empty!'
+            exit 1
+          fi
+
+          sed -i -e "s/ENV AWSCLI_VERSION .*$/ENV AWSCLI_VERSION ${VERSION}/g" Dockerfile
+          git add Dockerfile
+
+          set +e
+          git commit -m "Bump version ${VERSION} from GitHub Actions"
+          git tag -a ${VERSION} -m "Release ${VERSION}"
+          git push origin --tags
+          set -e
+          git push origin
+
+      - name: Slack Notification (not success)
+        uses: homoluctus/slatify@master
+        if: "! success()"
+        continue-on-error: true
+        with:
+          job_name: '*update_version*'
+          type: ${{ job.status }}
+          icon_emoji: ":octocat:"
+          url: ${{ secrets.SLACK_WEBHOOK }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+  build:
+    needs:
+      - update_version
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: master
+
+      - run: docker-compose --file docker-compose.test.yml build
+      - run: docker-compose --file docker-compose.test.yml run sut
+
+      - name: Slack Notification (not success)
+        uses: homoluctus/slatify@master
+        if: "! success()"
+        continue-on-error: true
+        with:
+          job_name: '*build*'
+          type: ${{ job.status }}
+          icon_emoji: ":octocat:"
+          url: ${{ secrets.SLACK_WEBHOOK }}
+          token: ${{ secrets.GITHUB_TOKEN }}
