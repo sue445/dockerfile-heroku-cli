@@ -1,0 +1,7 @@
+version: "3.7"
+
+services:
+  # c.f. https://docs.docker.com/docker-hub/builds/automated-testing/
+  sut:
+    build: .
+    command: bash -c "heroku --version && git --version"
