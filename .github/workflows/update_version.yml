@@ -36,8 +36,8 @@ jobs:
           git add Dockerfile
 
           set +e
-          git commit -m "Bump version ${VERSION} from CircleCI" | true
-          git tag -a ${VERSION} -m "Release ${VERSION}" | true
+          git commit -m "Bump version ${VERSION} from GitHub Actions"
+          git tag -a ${VERSION} -m "Release ${VERSION}"
           git push origin --tags
           set -e
 
