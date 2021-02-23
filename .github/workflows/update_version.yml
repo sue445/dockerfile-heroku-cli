@@ -29,6 +29,7 @@ jobs:
         run: |
           set -xe
 
+          npm info heroku versions --json | jq --raw-output .[-1:][0] > VERSION
           VERSION=$(cat VERSION)
           git add VERSION
 
