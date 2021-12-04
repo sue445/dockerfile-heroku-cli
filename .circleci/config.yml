@@ -1,0 +1,33 @@
+version: 2.1
+
+orbs:
+  docker: circleci/docker@2.0.1
+  slack:  circleci/slack@3
+
+workflows:
+  docker-push-latest:
+    jobs:
+      - docker/publish:
+          image: sue445/heroku-cli
+          tag: latest
+          after_build:
+            - slack/status
+          context: DockerHub
+          filters:
+            branches:
+              only:
+                - master
+
+  docker-push-tag:
+    jobs:
+      - docker/publish:
+          image: sue445/heroku-cli
+          tag: $CIRCLE_TAG
+          after_build:
+            - slack/status
+          context: DockerHub
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^\d+\.\d+\.\d+$/
