@@ -9,15 +9,12 @@ jobs:
   update_version:
     runs-on: ubuntu-latest
 
-    container: node:buster
-
     steps:
-      - name: Install package
-        run: |
-          apt-get update
-          apt-get install git jq -y
-
       - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
 
       - name: Setup git
         run: |
