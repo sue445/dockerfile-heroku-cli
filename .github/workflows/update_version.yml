@@ -42,7 +42,7 @@ jobs:
           git push origin
 
       - name: Slack Notification (not success)
-        uses: homoluctus/slatify@master
+        uses: lazy-actions/slatify@master
         if: "! success()"
         continue-on-error: true
         with:
@@ -67,7 +67,7 @@ jobs:
       - run: docker-compose --file docker-compose.test.yml run sut
 
       - name: Slack Notification (not success)
-        uses: homoluctus/slatify@master
+        uses: lazy-actions/slatify@master
         if: "! success()"
         continue-on-error: true
         with:
