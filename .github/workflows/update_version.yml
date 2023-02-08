@@ -63,8 +63,8 @@ jobs:
         with:
           ref: master
 
-      - run: docker-compose --file docker-compose.test.yml build
-      - run: docker-compose --file docker-compose.test.yml run sut
+      - run: docker compose --file docker-compose.test.yml build
+      - run: docker compose --file docker-compose.test.yml run sut
 
       - name: Slack Notification (not success)
         uses: lazy-actions/slatify@master

@@ -17,8 +17,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - run: docker-compose --file docker-compose.test.yml build
-      - run: docker-compose --file docker-compose.test.yml run sut
+      - run: docker compose --file docker-compose.test.yml build
+      - run: docker compose --file docker-compose.test.yml run sut
 
       - name: Slack Notification
         uses: lazy-actions/slatify@master
