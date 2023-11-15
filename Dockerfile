@@ -1,10 +1,11 @@
-FROM node:18-alpine
+FROM node:18-alpine3.15
 
 RUN apk --update --no-cache add bash git openssh-client
 
 ENV HEROKU_CLI_VERSION 9.0.0-dev.0
 
-RUN yarn global add node-gyp \
+RUN npm update -g yarn npm \
+ && yarn global add node-gyp \
  && yarn global add heroku@${HEROKU_CLI_VERSION} \
  && rm -rf /tmp/* /root/.npm \
  && cd /usr/local/lib/node_modules/npm/ \
