@@ -26,7 +26,7 @@ jobs:
         run: |
           set -xe
 
-          npm info heroku versions --json | jq --raw-output .[-1:][0] > VERSION
+          npm info heroku versions --json | jq --raw-output 'map(select(test("^\\d+\\.\\d+\\.\\d+$"))) | last' > VERSION
           VERSION=$(cat VERSION)
           git add VERSION
 
