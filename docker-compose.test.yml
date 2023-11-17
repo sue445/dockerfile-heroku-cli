@@ -5,3 +5,6 @@ services:
   sut:
     build: .
     command: bash -c "heroku --version && git --version"
+
+    # FIXME: Build passes on arm64, but fails on amd64...
+    platform: linux/amd64
