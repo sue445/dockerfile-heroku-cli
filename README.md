@@ -1,8 +1,8 @@
 # sue445/heroku-cli
 Dockerfile for heroku deployment
 
-[![Build Status](https://github.com/sue445/dockerfile-heroku-cli/workflows/build/badge.svg?branch=master)](https://github.com/sue445/dockerfile-heroku-cli/actions?query=workflow%3Abuild)
-[![Build Status](https://github.com/sue445/dockerfile-heroku-cli/workflows/update_version/badge.svg?branch=master)](https://github.com/sue445/dockerfile-heroku-cli/actions?query=workflow%3Aupdate_version)
+[![build](https://github.com/sue445/dockerfile-heroku-cli/actions/workflows/build.yml/badge.svg)](https://github.com/sue445/dockerfile-heroku-cli/actions/workflows/build.yml)
+[![update_version](https://github.com/sue445/dockerfile-heroku-cli/actions/workflows/update_version.yml/badge.svg)](https://github.com/sue445/dockerfile-heroku-cli/actions/workflows/update_version.yml)
 [![CircleCI](https://circleci.com/gh/sue445/dockerfile-heroku-cli/tree/master.svg?style=svg)](https://circleci.com/gh/sue445/dockerfile-heroku-cli/tree/master)
 
 * https://hub.docker.com/r/sue445/heroku-cli/
