@@ -1,29 +1,71 @@
-name: build
+name: Build and Push Docker Container
 
 on:
   push:
     branches:
-      - master
-  pull_request:
-    types:
-      - opened
-      - synchronize
-      - reopened
+      - 'develop-*'
+    tags:
+      - 'v*.*.*'
+  workflow_dispatch:
+    inputs:
+      tag:
+        required: false
+        description: 'Tag to build (e.g., v1.2.3)'
+
 
 jobs:
-  build:
+  build-heroku-cli-container:
     runs-on: ubuntu-latest
-
     steps:
-      - uses: actions/checkout@v5
-
-      - run: docker compose --file docker-compose.test.yml build
-      - run: docker compose --file docker-compose.test.yml run sut
-
-      - name: Slack Notification
-        uses: act10ns/slack@v2
-        if: always()
-        continue-on-error: true
+      - name: Checkout repository
+        uses: actions/checkout@v4
         with:
-          status: ${{ job.status }}
-          webhook-url: ${{ secrets.SLACK_WEBHOOK }}
+          ref: ${{ github.event.inputs.tag }}
+
+      - name: Read version from file and set output
+        id: version
+        run: |
+          VERSION=$(cat VERSION)
+          echo "VERSION=$VERSION"
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+              
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: |
+            ghcr.io/${{ github.repository }}
+          tags: |
+            type=ref,event=branch
+            type=semver,pattern={{version}},prefix=int-,match=v(\d.\d.\d)$,event=tag
+            type=semver,pattern={{version}},value=${{ github.event.inputs.tag }},enable={{is_default_branch}}
+            type=semver,pattern={{major}}.{{minor}},value=${{ github.event.inputs.tag }},enable={{is_default_branch}}
+            type=semver,pattern={{major}},value=${{ github.event.inputs.tag }},enable={{is_default_branch}}
+            type=raw,value=latest,event=branch
+            type=raw,value=heroku-cli-${{ steps.version.outputs.version }},event=branch
+            type=raw,value=dev,enable=${{ startsWith(github.ref_name, 'develop-') }}
+
+      -   name: Build and push Docker images
+          id: push
+          uses: docker/build-push-action@v6
+          with:
+            file: ./Dockerfile
+            push: true
+            tags: ${{ steps.meta.outputs.tags }}
+            labels: ${{ steps.meta.outputs.labels }}
+#            platforms: linux/amd64,linux/arm/v7,linux/arm64/v8
+            platforms: linux/amd64
+            outputs: type=image,name=target,annotation-index.org.opencontainers.image.description=Heroku CLI https://github.com/heroku/cli/releases/tag/v${{ steps.version.outputs.version }},annotation-index.org.opencontainers.image.version=${{ steps.version.outputs.version }}
