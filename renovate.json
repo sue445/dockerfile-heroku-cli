@@ -1,0 +1,41 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:base"
+  ],
+  "enabledManagers": ["dockerfile", "github-actions"],
+  "dependencyDashboard": true,
+  "prConcurrentLimit": 5,
+  "prHourlyLimit": 2,
+  "labels": ["dependencies", "renovate"],
+  "assignees": ["sue445"],
+  "schedule": ["before 5am on monday"],
+  "packageRules": [
+    {
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["node"],
+      "groupName": "node base image"
+    },
+    {
+      "matchManagers": ["dockerfile"],
+      "matchDepTypes": ["final"],
+      "enabled": true,
+      "pinDigests": false
+    },
+    {
+      "matchManagers": ["github-actions"],
+      "groupName": "github-actions",
+      "schedule": ["before 5am on monday"]
+    }
+  ],
+  "regexManagers": [
+    {
+      "fileMatch": ["^Dockerfile$"],
+      "matchStrings": [
+        "ARG HEROKU_CLI_VERSION=(?<currentValue>.*?)\\n"
+      ],
+      "datasourceTemplate": "npm",
+      "depNameTemplate": "heroku"
+    }
+  ]
+}
