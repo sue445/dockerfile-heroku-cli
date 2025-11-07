@@ -3,15 +3,15 @@ FROM node:25-alpine
 ARG HEROKU_CLI_VERSION=10.15.0
 ENV HEROKU_CLI_VERSION=${HEROKU_CLI_VERSION}
 
-LABEL org.opencontainers.image.title="node-heroku-cli" \
-      org.opencontainers.image.description="Node.js (Alpine) with pinned Heroku CLI" \
-      org.opencontainers.image.version="${HEROKU_CLI_VERSION}" \
-      org.opencontainers.image.source="https://github.com/mmz-srf/dockerfile-heroku-cli" \
+LABEL org.opencontainers.image.title="node-heroku-cli" 
+LABEL org.opencontainers.image.description="Node.js (Alpine) with pinned Heroku CLI" 
+LABEL org.opencontainers.image.version="${HEROKU_CLI_VERSION}" 
+LABEL org.opencontainers.image.source="https://github.com/mmz-srf/dockerfile-heroku-cli" 
 
 # npm noise off
-ENV NPM_CONFIG_AUDIT=false \
-    NPM_CONFIG_FUND=false \
-    NPM_CONFIG_UPDATE_NOTIFIER=false
+ENV NPM_CONFIG_AUDIT=false 
+ENV NPM_CONFIG_FUND=false 
+ENV NPM_CONFIG_UPDATE_NOTIFIER=false
 
 # needed for git-based deploys and SSH remotes
 RUN apk add --no-cache git openssh-client
