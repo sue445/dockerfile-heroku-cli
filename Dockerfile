@@ -1,4 +1,4 @@
-FROM node:14-alpine
+FROM node:24-alpine
 
 RUN apk --update --no-cache add bash git openssh-client
 
