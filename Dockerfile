@@ -2,7 +2,7 @@ FROM node:24-alpine
 
 RUN apk --update --no-cache add bash git openssh-client coreutils
 
-ENV HEROKU_CLI_VERSION 11.1.1
+ENV HEROKU_CLI_VERSION 11.2.0
 
 RUN npm install -g heroku@${HEROKU_CLI_VERSION} \
  && rm -rf /tmp/* /root/.npm \
