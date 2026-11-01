@@ -15,13 +15,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/checkout@v7.0.1
 
       - run: docker compose --file docker-compose.test.yml build
       - run: docker compose --file docker-compose.test.yml run sut
 
       - name: Slack Notification
-        uses: act10ns/slack@d96404edccc6d6467fc7f8134a420c851b1e9054 # v2.2.0
+        uses: act10ns/slack@v2.2.0
         if: always()
         continue-on-error: true
         with:

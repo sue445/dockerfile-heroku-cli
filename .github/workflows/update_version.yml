@@ -10,9 +10,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/checkout@v7.0.1
 
-      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+      - uses: actions/setup-node@v7.1.0
         with:
           node-version: latest
 
@@ -42,7 +42,7 @@ jobs:
           git push origin
 
       - name: Slack Notification (not success)
-        uses: act10ns/slack@d96404edccc6d6467fc7f8134a420c851b1e9054 # v2.2.0
+        uses: act10ns/slack@v2.2.0
         if: "! success()"
         continue-on-error: true
         with:
@@ -56,7 +56,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/checkout@v7.0.1
         with:
           ref: master
 
@@ -64,7 +64,7 @@ jobs:
       - run: docker compose --file docker-compose.test.yml run sut
 
       - name: Slack Notification (not success)
-        uses: act10ns/slack@d96404edccc6d6467fc7f8134a420c851b1e9054 # v2.2.0
+        uses: act10ns/slack@v2.2.0
         if: "! success()"
         continue-on-error: true
         with:
