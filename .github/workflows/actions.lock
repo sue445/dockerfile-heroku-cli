@@ -11,6 +11,7 @@ workflows:
         - 'act10ns/slack@v2.2.0'
         - 'actions/checkout@v7.0.1'
         - 'actions/setup-node@v7.1.0'
+    '.github/workflows/verify-actions-lockfile.yml': []
 dependencies:
     'act10ns/slack@v2.2.0':
         ref: 'v2.2.0'
